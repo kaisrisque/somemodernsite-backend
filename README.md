@@ -1,3 +1,5 @@
+Backend of my personal website: http://jasonyue.ca
+
 [Development]
 [Virtualenv]
 Share venv configurations by freezing and using requirements.txt (while being in the virtualenv)
