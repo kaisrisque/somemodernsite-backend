@@ -15,7 +15,6 @@ db.sqlite3
 media
 keys/
 
-
 # Created by https://www.gitignore.io/api/visualstudiocode
 # Edit at https://www.gitignore.io/?templates=visualstudiocode
 
@@ -33,6 +32,9 @@ keys/
 # in your Git repository. Update and uncomment the following line accordingly.
 jasonyue/static/
 jasonyue/assets/
+
+jasonyue/webpack-stats.dev.json
+jasonyue/webpack-stats.prod.json
 
 ### Django.Python Stack ###
 # Byte-compiled / optimized / DLL files
