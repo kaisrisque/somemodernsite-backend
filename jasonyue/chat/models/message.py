@@ -12,7 +12,6 @@ def validate_message_content(content):
             params={'content': content},
         )
 
-
 class Message(models.Model):
     class Meta(object):
         app_label = 'chat'

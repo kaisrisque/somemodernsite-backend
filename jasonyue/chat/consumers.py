@@ -25,8 +25,9 @@ class ChatConsumer(WebsocketConsumer):
             'command': 'messages',
             'messages': self.messages_to_json(messages)
         }
+        Message.objects.all().delete()
         self.send_message(content)
-
+    
     def new_message(self, data):
         author = data['from']
         text = data['text']
