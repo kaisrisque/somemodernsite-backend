@@ -14,6 +14,8 @@ def validate_message_content(content):
 
 
 class Message(models.Model):
+    class Meta(object):
+        app_label = 'chat'
 
     id = models.UUIDField(
         primary_key=True,
