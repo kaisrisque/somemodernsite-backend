@@ -42,13 +42,29 @@ INSTALLED_APPS = [
     'chat',
 	'blog',
 	'channels',
+
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+    'wagtail.contrib.postgres_search',
+
+    'modelcluster',
+    'taggit',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
 ]
 
 CACHES = {
@@ -91,6 +107,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'wagtail.core.middleware.SiteMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'jasonyue.urls'
@@ -110,25 +129,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'jasonyue.wsgi.application'
-ASGI_APPLICATION = 'jasonyue.routing.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'jasonyue',
-        'USER': 'root',
-        'PASSWORD': 'rb3wRa2fdZD6deGFT352372euOpo7iml',
-        'HOST': 'mydbinstance.clfpmhbmxkl2.ca-central-1.rds.amazonaws.com',
-        'PORT': '5432',
-	}
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -162,10 +162,15 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = "chat.User"
+
+WSGI_APPLICATION = 'jasonyue.wsgi.application'
+
+ASGI_APPLICATION = 'jasonyue.routing.application'
+
+WAGTAIL_SITE_NAME = "Jason's Website"
