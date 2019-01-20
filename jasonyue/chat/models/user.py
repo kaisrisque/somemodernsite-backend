@@ -5,7 +5,7 @@ from django.utils import timezone
 from .message import Message
 
 
-class User(AbstractUser):
+class User(models.Model):
     class Meta(object):
         app_label = 'chat'
 
