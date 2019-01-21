@@ -18,7 +18,7 @@ WEBPACK_LOADER = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://redis-backend.nt9c3i.0001.cac1.cache.amazonaws.com:6379',
+        'LOCATION': 'redis://' + PROD_REDIS_IP + ':6379',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -29,7 +29,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('redis-backend.nt9c3i.0001.cac1.cache.amazonaws.com', 6379)],
+            "hosts": [(PROD_REDIS_IP, 6379)],
         },
     },
 }

@@ -27,7 +27,7 @@ DEBUG = True
 CACHE_TTL = 60 * 60 * 24
 
 ALLOWED_HOSTS = [
-    '35.182.127.195',
+    DEV_IP,
     'jasonyue.ca',
     'www.jasonyue.ca',
     '127.0.0.1',
@@ -70,7 +70,7 @@ INSTALLED_APPS = [
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://35.182.127.195:6379',
+        'LOCATION': 'redis://' + DEV_IP + ':6379',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -81,7 +81,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('35.182.127.195', 6379)],
+            "hosts": [(DEV_IP, 6379)],
         },
     },
 }
