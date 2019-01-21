@@ -166,8 +166,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#AUTH_USER_MODEL = "chat.User"
-
 WSGI_APPLICATION = 'jasonyue.wsgi.application'
 
 ASGI_APPLICATION = 'jasonyue.routing.application'
