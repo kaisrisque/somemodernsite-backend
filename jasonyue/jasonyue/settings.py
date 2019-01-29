@@ -41,8 +41,10 @@ INSTALLED_APPS = [
 	'rest_framework',
     'chat',
 	'blog',
+    'blog2',
 	'channels',
 
+    'wagtail.api.v2',
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
