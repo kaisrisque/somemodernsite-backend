@@ -15,13 +15,13 @@ class ChatConsumer(WebsocketConsumer):
             "content": text,
         }
         content = {
-            'command': 'new_message',
+            'command': 'chat-new_message',
             'message': message
         }
         self.send_chat_message(content)
 
     commands = {
-        'new_message': new_message
+        'chat-new_message': new_message
     }
 
     def connect(self):
