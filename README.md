@@ -1,43 +1,83 @@
-Backend of my personal website: http://jasonyue.ca
+**Backend of my personal website: http://jasonyue.ca**
 
-# [Development]
+Certain files are "hidden" for security purposes, but there are restrictions already in place so there really is no need.
 
-## [Virtualenv]
+# Projects
 
-Share venv configurations by freezing and using requirements.txt (while being in the virtualenv)
+## Blog
 
-pip freeze > requirements.txt
+Both blog versions are compatible, due to the fact that they expose the same JSON subject. However, v2 has more features and is more robust.
 
---------------------------
+All of the blogs are served through the API.
 
-## [Unix]
+### Blog v1
 
-source venv/bin/activate
+This is a simple blog that is built from a tutorial. It can easily be expanded, but would take some time to setup.
 
-## [Windows]
+### Blog v2
 
-venv\Scripts\activate.bat
+This is the new blog systen that uses a Django package called Wagtail. It is feature-rich and allows for delivering data through an API.
 
---------------------------
+It's compatible with the current v1 system and does not require much modifications on the frontend, since it purposely has the same subjects as v1.
+
+The API link is different though.
+
+## Tic-Tac-Toe
+
+Each request should contain the current board and the player who has moved. 
+
+### AI
+
+The backend for the AI uses a "private" connection, or in other words, it only communicates with the connected client.
+
+### Multiplayer
+
+The backend for multiplayer can technically handle many players, but should only hae 2 players actually playing.
+
+## Chat
+
+The chat backend does not store any of the message, but instead simply broadcasts all received messages asap.
+
+## Websocket
+
+This is a simple app that routes all websocket data to the correct destination.
+
+# Development
+
+## Virtualenv
+
+Share venv configurations by freezing and using requirements.txt (while being in the virtualenv).
+
+pip freeze > requirements.txt.
 
 pip install -r requirements.txt
 
-# [Production]
+### Unix
 
-## [To check if ready to deploy]
+source venv/bin/activate
+
+### Windows
+
+venv\Scripts\activate.bat
+
+# Production
+
+## To check if ready to deploy
 
 python manage.py check --deploy --settings=jasonyue.production_settings
 
-## [Run before deployment]
+## Run before deployment
 
 python manage.py collectstatic --settings=jasonyue.production_settings
 
-## [Run to start production server]
+## Run to start production server
 
 python manage.py runserver --settings=jasonyue.production_settings
 
-## [Deployment]
+# Deployment
 
-## [Upload files to the server]
+The server has a script that can be run at any time and will update both the front and backend.
 
-sudo systemctl restart uwsgi
+cd /mysite
+
+source ./push.sh

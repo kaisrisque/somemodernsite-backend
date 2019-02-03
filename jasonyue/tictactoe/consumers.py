@@ -40,23 +40,23 @@ class TicTacToeAIConsumer(WebsocketConsumer):
                 winningMoves += 1
         return winningMoves >= 2
 
-    def getComputerMove(self, b):
+    def getComputerMove(self, b, cpu, player):
         # Check computer win moves
         for i in range(0, 9):
-            if b[i] is None and self.testWinMove(b, 'O', i):
+            if b[i] is None and self.testWinMove(b, cpu, i):
                 return i
         # Check player win moves
         for i in range(0, 9):
-            if b[i] is None and self.testWinMove(b, 'X', i):
+            if b[i] is None and self.testWinMove(b, player, i):
                 return i
         # Check computer fork opportunities
         for i in range(0, 9):
-            if b[i] is None and self.testForkMove(b, 'O', i):
+            if b[i] is None and self.testForkMove(b, cpu, i):
                 return i
         # Check player fork opportunities, incl. two forks
         playerForks = 0
         for i in range(0, 9):
-            if b[i] is None and self.testForkMove(b, 'X', i):
+            if b[i] is None and self.testForkMove(b, player, i):
                 playerForks += 1
                 tempMove = i
         if playerForks == 1:
@@ -79,8 +79,12 @@ class TicTacToeAIConsumer(WebsocketConsumer):
     
     def processBoard(self, data):
         board = data['board']
-        index = self.getComputerMove(board)
-        board[index] = "O"
+        player = data['player']
+        cpu = "O"
+        if player == "O":
+            cpu = "X"
+        index = self.getComputerMove(board, cpu, player)
+        board[index] = cpu
         content = {
             'command': 'tictactoe-AI',
             'board': board
@@ -92,22 +96,11 @@ class TicTacToeAIConsumer(WebsocketConsumer):
     }
 
     def connect(self):
-        self.room_name = 'global'
-        self.room_group_name = 'tictactoe_%s' % self.room_name
-
-        # Join room group
-        async_to_sync(self.channel_layer.group_add)(
-            self.room_group_name,
-            self.channel_name
-        )
         self.accept()
 
     def disconnect(self, close_code):
         # leave group room
-        async_to_sync(self.channel_layer.group_discard)(
-            self.room_group_name,
-            self.channel_name
-        )
+        pass
 
     def receive(self, text_data):
         data = json.loads(text_data)
@@ -115,42 +108,37 @@ class TicTacToeAIConsumer(WebsocketConsumer):
 
     def send_move(self, message):
         # Send message to room group
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
-            {
-                'type': 'board',
-                'message': message
-            }
-        )
-
-    # Receive message from room group
-    def board(self, event):
-        message = event['message']
-        # Send message to WebSocket
         self.send(text_data=json.dumps(message))
 
 class TicTacToeMultiConsumer(WebsocketConsumer):
-    
-    def new_message(self, data):
-        author = data['from']
-        text = data['text']
-        message = {
-            "author": author,
-            "content": text,
-        }
+    def processBoard(self, data):
+        board = data['board']
+        player = data['player']
         content = {
-            'command': 'new_message',
-            'message': message
+            'command': 'tictactoe-multi',
+            'board': board,
+            'player': player,
         }
-        self.send_chat_message(content)
+        self.send_move_channel(content)
+
+    def processMessage(self, data):
+        message = data['message']
+        playerId= data['playerId']
+        content = {
+            'command': 'tictactoe-multimessage',
+            'message': message,
+            'playerId': playerId
+        }
+        self.send_move_channel(content)
 
     commands = {
-        'new_message': new_message
+        'tictactoe-multi': processBoard,
+        'tictactoe-multimessage': processMessage,
     }
 
     def connect(self):
-        self.room_name = ''.join(random.choices(string.ascii_uppercase + string.digits, k=9))
-        self.room_group_name = 'tictactoe_AI_%s' % self.room_name
+        self.room_name = self.scope['url_route']['kwargs']['room_name']
+        self.room_group_name = 'tictactoe_multi_%s' % self.room_name
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -170,18 +158,18 @@ class TicTacToeMultiConsumer(WebsocketConsumer):
         data = json.loads(text_data)
         self.commands[data['command']](self, data)
 
-    def send_chat_message(self, message):
+    def send_move_channel(self, message):
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
-                'type': 'chat_message',
+                'type': 'send_move',
                 'message': message
             }
         )
 
     # Receive message from room group
-    def chat_message(self, event):
+    def send_move(self, event):
         message = event['message']
         # Send message to WebSocket
         self.send(text_data=json.dumps(message))
