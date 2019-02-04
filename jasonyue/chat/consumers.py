@@ -20,8 +20,22 @@ class ChatConsumer(WebsocketConsumer):
         }
         self.send_chat_message(content)
 
+    def new_event(self, data):
+        author = data['from']
+        text = data['text']
+        message = {
+            "author": author,
+            "content": text,
+        }
+        content = {
+            'command': 'chat-event',
+            'message': message
+        }
+        self.send_chat_message(content)
+
     commands = {
-        'chat-new_message': new_message
+        'chat-new_message': new_message,
+        'chat-event': new_event,
     }
 
     def connect(self):
