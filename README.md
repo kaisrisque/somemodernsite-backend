@@ -24,7 +24,7 @@ The API link is different though.
 
 ## Tic-Tac-Toe
 
-Each request should contain the current board and the player who has moved. 
+Each request should contain the current board and the player who has moved.
 
 ### AI
 
